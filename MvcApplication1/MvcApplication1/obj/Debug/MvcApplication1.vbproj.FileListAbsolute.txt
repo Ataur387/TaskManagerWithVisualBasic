@@ -1,0 +1,8 @@
+c:\users\asus\documents\visual studio 2010\Projects\MvcApplication1\MvcApplication1\bin\MvcApplication1.dll
+c:\users\asus\documents\visual studio 2010\Projects\MvcApplication1\MvcApplication1\bin\MvcApplication1.pdb
+c:\users\asus\documents\visual studio 2010\Projects\MvcApplication1\MvcApplication1\bin\MvcApplication1.xml
+c:\users\asus\documents\visual studio 2010\Projects\MvcApplication1\MvcApplication1\obj\Debug\MvcApplication1.Resources.resources
+c:\users\asus\documents\visual studio 2010\Projects\MvcApplication1\MvcApplication1\obj\Debug\MvcApplication1.vbproj.GenerateResource.Cache
+c:\users\asus\documents\visual studio 2010\Projects\MvcApplication1\MvcApplication1\obj\Debug\MvcApplication1.dll
+c:\users\asus\documents\visual studio 2010\Projects\MvcApplication1\MvcApplication1\obj\Debug\MvcApplication1.xml
+c:\users\asus\documents\visual studio 2010\Projects\MvcApplication1\MvcApplication1\obj\Debug\MvcApplication1.pdb
