@@ -18,6 +18,14 @@
         <div>
             <fieldset>
                 <legend>Account Information</legend>
+
+                <div class="editor-label">
+                    <%: Html.LabelFor(Function(m) m.FullName) %>
+                </div>
+                <div class="editor-field">
+                    <%: Html.TextBoxFor(Function(m) m.FullName)%>
+                    <%: Html.ValidationMessageFor(Function(m) m.FullName) %>
+                </div>
                 
                 <div class="editor-label">
                     <%: Html.LabelFor(Function(m) m.UserName) %>

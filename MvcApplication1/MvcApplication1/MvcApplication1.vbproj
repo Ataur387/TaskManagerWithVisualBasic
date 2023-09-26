@@ -100,6 +100,7 @@
   <ItemGroup>
     <Compile Include="Controllers\TaskController.vb" />
     <Compile Include="DB\DBContext.vb" />
+    <Compile Include="DB\RegisterRepository.vb" />
     <Compile Include="DB\TaskRepository.vb" />
     <Compile Include="Global.asax.vb">
       <DependentUpon>Global.asax</DependentUpon>
@@ -123,6 +124,7 @@
     <Compile Include="Controllers\AccountController.vb" />
     <Compile Include="Controllers\HomeController.vb" />
     <Compile Include="Models\AccountModels.vb" />
+    <Compile Include="Services\AccountService.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">

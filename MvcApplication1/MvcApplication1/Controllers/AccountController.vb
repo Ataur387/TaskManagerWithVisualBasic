@@ -1,6 +1,7 @@
 ﻿Imports System.Diagnostics.CodeAnalysis
 Imports System.Security.Principal
 Imports System.Web.Routing
+Imports System.Web.Security
 
 <HandleError()> _
 Public Class AccountController
@@ -8,6 +9,10 @@ Public Class AccountController
 
     Private formsServiceValue As IFormsAuthenticationService
     Private membershipServiceValue As IMembershipService
+    Dim connectionString As String = "Data Source=LAPTOP-KCNT9R65;Initial Catalog=aspnetdb;Integrated Security=SSPI;"
+    Dim repository As New RegisterRepository(connectionString)
+    Dim Service As New AccountService
+    Dim Salt As String = "salt"
 
     Public Property FormsService() As IFormsAuthenticationService
         Get
@@ -42,34 +47,26 @@ Public Class AccountController
         Return View()
     End Function
 
-    <HttpPost()> _
+    <HttpPost()>
     Public Function LogOn(ByVal model As LogOnModel, ByVal returnUrl As String) As ActionResult
         If ModelState.IsValid Then
             Dim connectionString As String = "Data Source=LAPTOP-KCNT9R65;Initial Catalog=aspnetdb;Integrated Security=SSPI;"
-            Dim repository As New TaskRepository(connectionString)
+            Dim repository As New RegisterRepository(connectionString)
+            Dim user As RegisterModel = repository.GetByUserName(model.UserName)
 
-            Dim entity As New Task()
-            entity.Id = 1
-            entity.Name = "Interview"
-            entity.Status = "PENDING"
-
-            repository.Insert(entity)
-
-            If MembershipService.ValidateUser(model.UserName, model.Password) Then
-                FormsService.SignIn(model.UserName, model.RememberMe)
-                If Not String.IsNullOrEmpty(returnUrl) Then
-                    Return Redirect(returnUrl)
-                Else
-                    Return RedirectToAction("Index", "Home")
-                End If
+            If user IsNot Nothing AndAlso Service.VerifyPassword(model.Password, user.Password, Salt) Then
+                ' Password is correct; you can proceed with authentication
+                ' Here, you may set authentication cookies or session variables
+                Return RedirectToAction("Index", "Home")
             Else
                 ModelState.AddModelError("", "The user name or password provided is incorrect.")
             End If
         End If
 
-        ' If we got this far, something failed, redisplay form
+        ' If ModelState is not valid or authentication fails, return to the login view with an error message
         Return View(model)
     End Function
+
 
     ' **************************************
     ' URL: /Account/LogOff
@@ -93,15 +90,9 @@ Public Class AccountController
     <HttpPost()> _
     Public Function Register(ByVal model As RegisterModel) As ActionResult
         If ModelState.IsValid Then
-            ' Attempt to register the user
-            Dim createStatus As MembershipCreateStatus = MembershipService.CreateUser(model.UserName, model.Password, model.Email)
-
-            If createStatus = MembershipCreateStatus.Success Then
-                FormsService.SignIn(model.UserName, False)
-                Return RedirectToAction("Index", "Home")
-            Else
-                ModelState.AddModelError("", AccountValidation.ErrorCodeToString(createStatus))
-            End If
+            model.Password = Service.HashPassword(model.Password, Salt)
+            repository.Insert(model)
+            Return (RedirectToAction("Index", "Home"))
         End If
 
         ' If we got this far, something failed, redisplay form

@@ -92,7 +92,18 @@ Public Class RegisterModel
     Private passwordValue As String
     Private confirmPasswordValue As String
     Private emailValue As String
+    Private FullNameValue As String
 
+    <Required()> _
+    <DisplayName("Full Name")> _
+    Public Property FullName() As String
+        Get
+            Return FullNameValue
+        End Get
+        Set(ByVal value As String)
+            FullNameValue = value
+        End Set
+    End Property
     <Required()> _
     <DisplayName("User name")> _
     Public Property UserName() As String
