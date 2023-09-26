@@ -40,23 +40,25 @@ Public Class TaskRepository
     Public Sub Insert(ByVal entity As Task)
         Using connection As New SqlConnection(connectionString)
             connection.Open()
-            Using cmd As New SqlCommand("INSERT INTO task (name, status) VALUES (@Value1, @Value2)", connection)
+            Using cmd As New SqlCommand("INSERT INTO task (name, status, userid) VALUES (@Value1, @Value2, @Value3)", connection)
                 cmd.Parameters.AddWithValue("@Value1", entity.Name)
                 cmd.Parameters.AddWithValue("@Value2", entity.Status)
+                cmd.Parameters.AddWithValue("@Value3", entity.UserId)
                 cmd.ExecuteNonQuery()
             End Using
         End Using
     End Sub
 
-    Public Function GetAllTasks() As List(Of Task)
+    Public Function GetAllTasks(ByVal userId As Integer) As List(Of Task)
         Dim tasks As New List(Of Task)()
 
         Using connection As New SqlConnection(connectionString)
             connection.Open()
 
-            Dim query As String = "SELECT * FROM task"
+            Dim query As String = "SELECT * FROM task WHERE userid = @userId"
 
             Using cmd As New SqlCommand(query, connection)
+                cmd.Parameters.AddWithValue("@userId", userId)
                 Using reader As SqlDataReader = cmd.ExecuteReader()
                     While reader.Read()
                         Dim task As New Task()

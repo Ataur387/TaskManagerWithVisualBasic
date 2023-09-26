@@ -53,10 +53,13 @@ Public Class AccountController
             Dim connectionString As String = "Data Source=LAPTOP-KCNT9R65;Initial Catalog=aspnetdb;Integrated Security=SSPI;"
             Dim repository As New RegisterRepository(connectionString)
             Dim user As RegisterModel = repository.GetByUserName(model.UserName)
-
             If user IsNot Nothing AndAlso Service.VerifyPassword(model.Password, user.Password, Salt) Then
                 ' Password is correct; you can proceed with authentication
                 ' Here, you may set authentication cookies or session variables
+                Dim authTicket As New FormsAuthenticationTicket(1, model.UserName, DateTime.Now, DateTime.Now.AddMinutes(30), False, "")
+                Dim encryptedTicket As String = FormsAuthentication.Encrypt(authTicket)
+                Dim authCookie As New HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket)
+                Response.Cookies.Add(authCookie)
                 Return RedirectToAction("Index", "Home")
             Else
                 ModelState.AddModelError("", "The user name or password provided is incorrect.")

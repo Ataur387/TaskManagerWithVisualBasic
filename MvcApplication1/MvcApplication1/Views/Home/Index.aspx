@@ -7,6 +7,6 @@
 <asp:Content ID="indexContent" ContentPlaceHolderID="MainContent" runat="server">
     <h2><%: ViewData("Message") %></h2>
     <p>
-        To learn more about ASP.NET MVC visit <a href="http://asp.net/mvc" title="ASP.NET MVC Website">http://asp.net/mvc</a>.
+        This is a simple Task Management CRUD Service built on ASP.NET MVC 2 template. As an user you can Log On And List out the tasks, change their status, update and delete them.
     </p>
 </asp:Content>

@@ -31,6 +31,7 @@ Public Class RegisterRepository
                         user.UserName = reader("username").ToString()
                         user.Email = reader("email").ToString
                         user.Password = reader("password").ToString
+                        user.Id = reader("id").ToString()
                     End If
                 End Using
             End Using

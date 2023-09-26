@@ -1,15 +1,19 @@
 ﻿Namespace MvcApplication1
+    <Authorize()>
     Public Class TaskController
         Inherits System.Web.Mvc.Controller
 
         Dim connectionString As String = "Data Source=LAPTOP-KCNT9R65;Initial Catalog=aspnetdb;Integrated Security=SSPI;"
         Dim repository As New TaskRepository(connectionString)
-
+        Dim userRepository As New RegisterRepository(connectionString)
         '
         ' GET: /Task
 
         Function Index() As ActionResult
-            Dim tasks As List(Of Task) = repository.GetAllTasks()
+            Dim userName As String = User.Identity.Name
+            Dim appUser As RegisterModel
+            appUser = userRepository.GetByUserName(userName)
+            Dim tasks As List(Of Task) = repository.GetAllTasks(appUser.Id)
             Return View("Tasks", tasks)
         End Function
 
@@ -31,19 +35,23 @@
         '
         ' POST: /Task/Create
 
-        <HttpPost> _
+        <HttpPost()> _
         Function Create(ByVal collection As FormCollection) As ActionResult
             Try
+                Dim username As String = User.Identity.Name
+                Dim appUser As RegisterModel
+                appUser = userRepository.GetByUserName(username)
                 Dim entity As New Task()
                 entity.Name = collection("Name")
                 entity.Status = "PENDING"
+                entity.UserId = appUser.Id
                 repository.Insert(entity)
                 Return RedirectToAction("Index")
             Catch
                 Return View()
             End Try
         End Function
-        
+
         '
         ' GET: /Task/Edit/5
 
@@ -80,7 +88,7 @@
         '
         ' POST: /Task/Delete/5
 
-        <HttpPost> _
+        <HttpPost()> _
         Function Delete(ByVal id As Integer, ByVal collection As FormCollection) As ActionResult
             Try
                 repository.Delete(id)
@@ -88,6 +96,6 @@
             Catch
                 Return View()
             End Try
-        End Function     
+        End Function
     End Class
 End Namespace

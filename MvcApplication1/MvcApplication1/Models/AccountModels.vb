@@ -88,12 +88,20 @@ End Class
 
 <PropertiesMustMatch("Password", "ConfirmPassword", ErrorMessage:="The password and confirmation password do not match.")> _
 Public Class RegisterModel
+    Private IdValue As Integer
     Private userNameValue As String
     Private passwordValue As String
     Private confirmPasswordValue As String
     Private emailValue As String
     Private FullNameValue As String
-
+    Public Property Id() As Integer
+        Get
+            Return IdValue
+        End Get
+        Set(ByVal value As Integer)
+            IdValue = value
+        End Set
+    End Property
     <Required()> _
     <DisplayName("Full Name")> _
     Public Property FullName() As String
